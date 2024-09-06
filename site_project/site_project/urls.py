@@ -20,7 +20,10 @@ from django.urls import path, include
 from site_project import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', include('uchet_active.urls')), # главная страница, в т.ч. LOGIN_REDIRECT_URL
+    # path('uchet_active/', include('uchet_active.urls')),
+    path('admin/', admin.site.urls),    
+    path('auth_users/', include('auth_users.urls')),
 ]
 
 if settings.DEBUG:

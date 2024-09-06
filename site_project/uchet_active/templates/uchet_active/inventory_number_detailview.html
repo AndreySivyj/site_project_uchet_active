@@ -1,0 +1,26 @@
+{% extends "uchet_active/detailview.html" %}
+
+{% block table %}
+        <table class="table table-striped table-hover table-bordered border-primary text-center">
+            <thead class="table-primary">
+                {% comment %} <tr class="title_table"><th colspan="2">{{ title_text }}</th></tr> {% endcomment %}
+                <tr>
+                    <th class="idClass" scope="col">id</th>
+                    <th scope="col">Инвентарный номер</th>
+
+                    {% comment %} <th scope="col"></th> {% endcomment %}
+                </tr>
+            </thead>
+            <tbody>                    
+                <tr>
+                    <th class="idClass" scope="row">{{ data.id }}</th>
+                    <td>{{ data.inventory_number }}</td>
+
+                    {% comment %} <td>                                    
+                        <a class="btn btn-sm btn-warning" href="{% url 'reestr_tmts_update' id=data.id %}">Изменить  &raquo;</a>
+                        <a class="btn btn-sm btn-danger" href="{% url 'reestr_tmts_delete' id=data.id %}">Удалить  &raquo;</a>
+                    </td> {% endcomment %}
+                </tr>                    
+            </tbody>
+        </table>        
+{% endblock table %}

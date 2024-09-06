@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title_text }}{% endblock title %}
+
+{% block header %}{{ title_text }}, [всего: {{ count_dataset }}]{% endblock header %}
+
+{% block body %}
+    <div class="row">
+        {% if count_dataset > 0 %}
+            <div class="row">
+                {% include "uchet_active/pagination.html"  %}
+            </div>
+
+            <div class="row">
+                {% block table %}{% endblock table %}
+            </div>
+
+            <div class="row">
+                {% include "uchet_active/pagination.html"  %}
+            </div>
+        {% else %}
+            <h2>Реестр "{{ title_text }}" пуст</h2>
+        {% endif %}
+    </div>
+{% endblock body %}

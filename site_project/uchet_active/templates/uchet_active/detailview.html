@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title_text }}{% endblock title %}
+
+{% block header %}{{ title_text }}{% endblock header %}
+
+{% block body %}
+
+    <div class="row">
+        {% block table %}{% endblock table %}
+    </div>
+
+    <div class="row">
+        <a class="btn btn-sm btn-primary" href="{% url url_return_to_the_list_view %}" role="button">Общий реестр записей &raquo;</a>
+    </div>
+    {% comment %} <div class="row mb-2">
+        <div class="col-3 align-self-center">
+            <a class="btn btn-sm btn-primary" href="{% url 'uchet_active:type_active_list_view' %}" role="button">Вернуться к списку записей &raquo;</a>
+        </div>
+    </div> {% endcomment %}
+{% endblock body %}
