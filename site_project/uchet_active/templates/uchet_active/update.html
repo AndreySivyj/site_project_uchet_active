@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title_text }}{% endblock title %}
+
+{% block header %}{{ title_text }}{% endblock header %}
+
+{% block body %}
+    <div class="container-fluid">
+        <form method = "post">
+            {% csrf_token %}
+
+            {{ form|crispy }} {% comment %} {{ form.as_p }}{% endcomment %}
+
+            {% comment %} <input type = "submit" class="submitbutton_update" name="submit" value = "Изменить" aria-describedby="inputGroup-sizing-sm"> {% endcomment %}
+
+            <div class="d-grid gap-2 col-3 mx-auto">
+                {% comment %} <input type = "hidden" name="creator_account" value = "{{user_login}}"> {% endcomment %}
+                <input type = "submit" class="btn btn-sm btn-success" name="submit" value = "Изменить">
+                <a class="btn btn-sm btn-warning" href="{% url url_return_to_the_list_view %}" role="button">Отмена</a>
+            </div>
+        </form>
+    </div>
+
+{% endblock body %}
+
+{% comment %} {% block scripts %}
+<script>
+    $("#id_type_TMTS").select2({ width:'100%'});
+    $("#id_name_TMTS").select2({ width:'100%'});
+    $("#id_owner_TMTS").select2({ width:'100%'});
+    $("#id_responsible_TMTS_repair").select2({ width:'100%'});
+</script>
+{% endblock scripts %} {% endcomment %}

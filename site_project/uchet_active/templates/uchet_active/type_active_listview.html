@@ -1,4 +1,36 @@
 {% extends "uchet_active/listview.html" %}
+{% load has_group %}
+
+
+{% block buttons %}
+    {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
+
+        <div class="row mx-auto my-1 my-sm-1 my-lg-1 p-1">
+            <div class="col-3 align-self-center">
+                <a class="btn btn-sm btn-success" href="{% url 'uchet_active:type_active_create' %}" role="button">Добавить новую запись</a>
+            </div>
+            
+                
+            {% comment %} 
+            <div class="col-3 align-self-center">
+                <form action="{% url 'reestr_tmts_search_list' %}" method="get">
+                    <input name="search_query" type="text" placeholder="Поиск..." >
+                </form>
+            </div> 
+    
+            <div class="col-3 align-self-center">
+                <a class="btn btn-lg btn-info" href="{% url 'reestr_tmts_list_filter'%}?{{ request.GET.urlencode }}" role="button">Фильтрация  &raquo;</a>
+            </div>
+    
+            <div class="col-3 align-self-center">
+                <a class="btn btn-lg btn-success" href="{% url 'export_reestr_tmts_xls_filter'%}?{{ request.GET.urlencode }}" role="button">Экспорт в xls  &raquo;</a>
+            </div>   
+            
+            {% endcomment %}
+        </div>
+
+    {% endif %}    
+{% endblock buttons %}
 
 {% block table %}
             <table class="table table-striped table-hover table-bordered border-primary text-center">
@@ -7,7 +39,10 @@
                     <tr>
                         <th class="idClass" scope="col">id (ссылка)</th>
                         <th scope="col">Тип актива</th>
-                        {% comment %} <th scope="col"></th> {% endcomment %}
+
+                        {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
+                            <th scope="col">Операции над записью</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -20,10 +55,13 @@
                             </th>
                             <td>{{ data.type_active }}</td>
 
-                            {% comment %} <td>                                    
-                                <a class="btn btn-sm btn-warning" href="{% url 'reestr_tmts_update' id=data.id %}">Изменить  &raquo;</a>
-                                <a class="btn btn-sm btn-danger" href="{% url 'reestr_tmts_delete' id=data.id %}">Удалить  &raquo;</a>
-                            </td> {% endcomment %}
+                            {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
+                                <td>
+                                    <a class="btn btn-sm btn-warning" href="{% url url_update_view id=data.id %}">Изменить</a>
+                                    <a class="btn btn-sm btn-danger" href="{% url url_delete_view id=data.id %}">Удалить</a>
+                                </td>
+                            {% endif %}
+                            
                         </tr>                    
                     {% endfor %}
                 </tbody>

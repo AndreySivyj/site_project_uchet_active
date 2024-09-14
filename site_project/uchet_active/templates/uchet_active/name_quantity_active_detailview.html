@@ -1,0 +1,30 @@
+{% extends "uchet_active/detailview.html" %}
+{% load has_group %}
+
+{% block table %}
+    <table class="table table-striped table-hover table-bordered border-primary text-center">
+        <thead class="table-primary">
+            <tr>
+                <th class="idClass" scope="col">id</th>
+                <th scope="col">Единица измерения</th>
+
+                {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
+                    <th scope="col">Операции над записью</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>                    
+            <tr>
+                <th class="idClass" scope="row">{{ data.id }}</th>
+                <td>{{ data.name_quantity }}</td>
+
+                {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
+                    <td>
+                        <a class="btn btn-sm btn-warning" href="{% url url_update_view id=data.id %}">Изменить</a>
+                        <a class="btn btn-sm btn-danger" href="{% url url_delete_view id=data.id %}">Удалить</a>
+                    </td>
+                {% endif %}
+            </tr>                    
+        </tbody>
+    </table>
+{% endblock table %}

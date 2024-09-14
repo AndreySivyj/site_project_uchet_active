@@ -1,14 +1,16 @@
 {% extends "uchet_active/detailview.html" %}
+{% load has_group %}
 
 {% block table %}
         <table class="table table-striped table-hover table-bordered border-primary text-center">
             <thead class="table-primary">
-                {% comment %} <tr class="title_table"><th colspan="2">{{ title_text }}</th></tr> {% endcomment %}
                 <tr>
                     <th class="idClass" scope="col">id</th>
                     <th scope="col">Инвентарный номер</th>
 
-                    {% comment %} <th scope="col"></th> {% endcomment %}
+                    {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
+                        <th scope="col">Операции над записью</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>                    
@@ -16,10 +18,12 @@
                     <th class="idClass" scope="row">{{ data.id }}</th>
                     <td>{{ data.inventory_number }}</td>
 
-                    {% comment %} <td>                                    
-                        <a class="btn btn-sm btn-warning" href="{% url 'reestr_tmts_update' id=data.id %}">Изменить  &raquo;</a>
-                        <a class="btn btn-sm btn-danger" href="{% url 'reestr_tmts_delete' id=data.id %}">Удалить  &raquo;</a>
-                    </td> {% endcomment %}
+                    {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
+                        <td>
+                            <a class="btn btn-sm btn-warning" href="{% url url_update_view id=data.id %}">Изменить</a>
+                            <a class="btn btn-sm btn-danger" href="{% url url_delete_view id=data.id %}">Удалить</a>
+                        </td>
+                    {% endif %}
                 </tr>                    
             </tbody>
         </table>        

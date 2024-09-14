@@ -5,17 +5,12 @@
 {% block header %}{{ title_text }}{% endblock header %}
 
 {% block body %}
-
-    <div class="row">
+    <div class="container-fluid">
         {% block table %}{% endblock table %}
     </div>
 
-    <div class="row">
-        <a class="btn btn-sm btn-primary" href="{% url url_return_to_the_list_view %}" role="button">Общий реестр записей &raquo;</a>
-    </div>
-    {% comment %} <div class="row mb-2">
-        <div class="col-3 align-self-center">
-            <a class="btn btn-sm btn-primary" href="{% url 'uchet_active:type_active_list_view' %}" role="button">Вернуться к списку записей &raquo;</a>
-        </div>
-    </div> {% endcomment %}
+    {% comment %} <div class="container-fluid bg-body-tertiary rounded my-3 py-3"> {% endcomment %}
+    <div class="d-grid gap-2 col-3 mx-auto">
+        <a class="btn btn-sm btn-info" href="{% url url_return_to_the_list_view %}" role="button">Вернуться к списку записей</a>
+    </div>    
 {% endblock body %}

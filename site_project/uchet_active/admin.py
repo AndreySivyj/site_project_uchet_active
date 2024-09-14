@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .admin_mixins import ExportAsCSVMixin
-from .models import Type_active, Name_active, Inventory_number, Owner_active, Status_active
+from .models import *
 
 
 @admin.register(Type_active)
@@ -55,6 +55,19 @@ class Owner_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
     ordering = ('owner_active',)
 
 
+@admin.register(Location_active)
+class Location_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
+    actions = [        
+        'export_csv',
+    ]
+
+    list_display = ('id', 'owner_active', 'location',)
+    list_display_links = ('location',)
+    list_filter = ['owner_active', 'location',]
+    search_fields = ('owner_active', 'location',)
+    ordering = ('owner_active', 'location',)
+
+
 @admin.register(Status_active)
 class Status_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
     actions = [        
@@ -66,3 +79,16 @@ class Status_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
     list_filter = ['status',]
     search_fields = ('status',)
     ordering = ('status',)
+
+
+@admin.register(Name_quantity_active)
+class Name_quantity_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
+    actions = [        
+        'export_csv',
+    ]
+
+    list_display = ('id', 'name_quantity',)
+    list_display_links = ('name_quantity',)
+    list_filter = ['name_quantity',]
+    search_fields = ('name_quantity',)
+    ordering = ('name_quantity',)

@@ -7,7 +7,7 @@
 
         <div class="row mx-auto my-1 my-sm-1 my-lg-1 p-1">
             <div class="col-3 align-self-center">
-                <a class="btn btn-sm btn-success" href="{% url 'uchet_active:owner_active_create' %}" role="button">Добавить новую запись</a>
+                <a class="btn btn-sm btn-success" href="{% url 'uchet_active:location_active_create' %}" role="button">Добавить новую запись</a>
             </div>
             
         </div>
@@ -22,6 +22,7 @@
                     <tr>
                         <th class="idClass" scope="col">id (ссылка)</th>
                         <th scope="col">Владелец актива</th>
+                        <th scope="col">Локация/Склад</th>
                         
                         {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
                             <th scope="col">Операции над записью</th>
@@ -36,7 +37,12 @@
                                     <a class="btn btn-sm btn-outline-primary" href="{{ data.get_absolute_url }}" role="button">{{ data.id }}</a>
                                 </div>
                             </th>
-                            <td>{{ data.owner_active}}</td>
+                            <td>
+                                <div class="d-grid gap-2">
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ data.owner_active.get_absolute_url }}" role="button">{{ data.owner_active }}</a>
+                                </div>
+                            </td>
+                            <td>{{ data.location }}</td>
 
                             {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
                                 <td>

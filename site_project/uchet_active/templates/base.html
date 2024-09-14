@@ -57,31 +57,47 @@
                     <li><a class="dropdown-item" href="{% url 'uchet_active:name_active_list_view' %}">Модели активов</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'uchet_active:inventory_number_list_view' %}">Инвентарные номера</a></li>
+                    <li><a class="dropdown-item" href="{% url 'uchet_active:name_quantity_active_list_view' %}">Единицы измерения</a></li>
+                    <li><a class="dropdown-item" href="{% url 'uchet_active:status_active_list_view' %}">Статусы</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'uchet_active:owner_active_list_view' %}">Владелецы активов</a></li>
+                    <li><a class="dropdown-item" href="{% url 'uchet_active:location_active_list_view' %}">Локация/Склад</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'uchet_active:status_active_list_view' %}">Статусы</a></li>
+                    
                   </ul>
                 </li>
 
+                {% comment %} 
                 <li class="nav-item">
                   <a class="nav-link active text-light" aria-current="page" href="#">Home</a>
                 </li>
 
                 <li class="nav-item">
                   <a class="nav-link text-light" href="#">Link</a>
-                </li>
+                </li>                
 
-                
-
-                {% comment %} <li class="nav-item">
+                <li class="nav-item">
                   <a class="nav-link disabled" aria-disabled="true">Link</a>
-                </li> {% endcomment %}
+                </li> 
+                {% endcomment %}
+                
               </ul>
+
+              <a class="navbar-brand px-3" href="#"></a>
+
               <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
-                <button class="btn btn-secondary type="submit">Найти</button>
+                <button class="btn btn-md btn-secondary" type="submit" style="border-color: white;">Найти</button>                
               </form>
+
+              <a class="navbar-brand px-5" href="#"></a>
+
+              <form class="d-flex">
+                <a class="navbar-brand text-light d-flex" href="#">Пользователь: {{request.user}}</a>
+                <a class="btn btn-md btn-secondary" href="{% url 'auth_users:logout' %}" role="button" style="border-color: white;">Выход</a>
+                {% comment %} <a class="navbar-brand text-light d-flex" href="{% url 'auth_users:logout' %}">[выход]</a> {% endcomment %}
+              </form>
+
             </div>
           </div>
         </nav>
@@ -99,9 +115,8 @@
           <div class="container-fluid">
               {% block body %}{% endblock body %}
           </div>
-      </main>
-
-    {% comment %} {% endif %} {% endcomment %}
+          
+      </main>      
 
     {% else %}
       <main class="container-fluid bg-body-tertiary rounded">
@@ -109,13 +124,11 @@
           <div class="title_text">  
             <header>Ошибка авторизации</header>
           </div>      
-          <div class="row">          
+          <div class="container-fluid">          
             <h2>Вы не авторизированы</h2>              
           </div>
-          <div class="row">
-            <div class="container-fluid">
-              <a class="btn btn-lg btn-primary" href="{% url 'auth_users:login' %}" role="button">Нажмите для входа в систему &raquo;</a>
-            </div>
+          <div class="container-fluid">            
+            <a class="btn btn-lg btn-primary" href="{% url 'auth_users:login' %}" role="button">Нажмите для входа в систему &raquo;</a>            
           </div>
         </div>
       </main>

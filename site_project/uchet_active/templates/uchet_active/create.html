@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title_text }}{% endblock title %}
+
+{% block header %}{{ title_text }}{% endblock header %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        
+        {% comment %} {% include 'laptop/messages.html' %} {% endcomment %}
+
+        <form method = "post">
+            {% csrf_token %}
+            
+            <div class="container-fluid">
+                {{ form|crispy }} {% comment %} {{ form.as_p }}{% endcomment %} 
+            </div>            
+
+            <div class="container-fluid">
+                {% comment %} <div class="col-3 align-self-center"> {% endcomment %}
+                <div class="d-grid gap-2 col-3 mx-auto">
+                    {% comment %} <input type = "hidden" name="creator_account" value = "{{user_login}}"> {% endcomment %}
+                    <input type = "submit" class="btn btn-sm btn-success" name="submit" value = "Добавить">
+                    <a class="btn btn-sm btn-warning" href="{% url url_return_to_the_list_view %}" role="button">Отмена</a>
+                </div>                
+            </div>
+        </form>
+    </div>
+
+{% endblock body %}
+
+{% comment %} {% block scripts %}
+<script>
+    $("#id_type_TMTS").select2({ width:'100%'});
+    $("#id_name_TMTS").select2({ width:'100%'});
+    $("#id_owner_TMTS").select2({ width:'100%'});
+    $("#id_responsible_TMTS_repair").select2({ width:'100%'});
+</script>
+{% endblock scripts %} {% endcomment %}

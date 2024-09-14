@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title_text }}{% endblock title %}
+
+{% block header %}{{ title_text }}{% endblock header %}
+
+{% block body %}
+
+<div class="container-fluid">
+    
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="container-fluid">
+            {% block table %}{% endblock table %}
+        </div>
+
+        {% comment %} <div class="container-fluid" style="text-align: center;">
+            <h3>Подтвердите удаление записи</h3>
+        </div> {% endcomment %}
+
+        <div class="container-fluid">
+            <div class="d-grid gap-2 col-3 mx-auto">
+                <input type = "submit" class="btn btn-sm btn-danger" name="submit" value="Удалить">
+                <a class="btn btn-sm btn-warning" href="{% url url_return_to_the_list_view %}" role="button">Отмена</a>
+            </div>
+        </div>
+
+        {% comment %} <div class="col-6 ">
+            <input type = "submit" class="submitbutton_delete" name="submit" class="superbutton" name="submit" value="Да">
+        <a class="btn btn-lg btn-info" href="{% url url_return_to_the_list %}">Нет</a>
+        </div>         {% endcomment %}
+    </form>    
+</div>
+
+{% endblock body %}
+
+
+
+
+
+
