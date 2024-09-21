@@ -11,6 +11,7 @@
         
         {% comment %} {% include 'laptop/messages.html' %} {% endcomment %}
 
+        {% comment %} <form class="form" method = "post"> {% endcomment %}
         <form method = "post">
             {% csrf_token %}
             
@@ -31,11 +32,21 @@
 
 {% endblock body %}
 
-{% comment %} {% block scripts %}
-<script>
+{% block scripts %}
+<script>    
+    $("#id_type_active").select2({ width:'100%'});
+    $("#id_owner_active").select2({ width:'100%'});
+</script>
+{% endblock scripts %}
+
+    {% comment %} 
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function() {
+        $('#id_type_acive').select2({ width:'100%'});
+    });
+
+    
     $("#id_type_TMTS").select2({ width:'100%'});
     $("#id_name_TMTS").select2({ width:'100%'});
     $("#id_owner_TMTS").select2({ width:'100%'});
-    $("#id_responsible_TMTS_repair").select2({ width:'100%'});
-</script>
-{% endblock scripts %} {% endcomment %}
+    $("#id_responsible_TMTS_repair").select2({ width:'100%'}); {% endcomment %}

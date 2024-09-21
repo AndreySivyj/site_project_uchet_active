@@ -1,5 +1,6 @@
 {% extends "uchet_active/listview.html" %}
 {% load has_group %}
+{% load widget_tweaks %}
 
 
 {% block buttons %}
@@ -29,6 +30,32 @@
                         {% endif %}
                     </tr>
                 </thead>
+                <thead class="table-secondary">
+                    <tr>
+                        <form method="GET" action="" class="form-inline"><!-- class="popup" -->
+                            {% csrf_token %}
+                            <th>
+                                {% comment %} <div class="row" style="margin: 3px;">
+                                    {% render_field filter.form.id   %}
+                                </div> {% endcomment %}
+                            </th>        
+                            <th>
+                                {% comment %} <div class="row mx-auto" > {% endcomment %}
+                                    {% render_field filter.form.owner_active   class="form-conrol" %}<!--  -->
+                                {% comment %} </div> {% endcomment %}
+                            </th>
+                            <th>
+                                <div class="row mx-auto" >
+                                    {% render_field filter.form.location   class="form-conrol" %}<!--  -->
+                                </div>
+                            </th>                              
+                            <th>
+                                <button type="submit" class="btn btn-sm btn-info" >Фильтровать</button>
+                                <a class="btn btn-sm btn-secondary" href="{% url url_return_to_the_list_view %}" role="button">Очистить</a>                                
+                            </th>                            
+                        </form>
+                    </tr>
+                </thead>
                 <tbody>
                     {% for data in dataset %}
                         <tr>
@@ -55,3 +82,9 @@
                 </tbody>
             </table>
 {% endblock table %}
+
+{% block scripts %}
+<script>    
+    $("#id_owner_active").select2({ width:'100%'});    
+</script>
+{% endblock scripts %}

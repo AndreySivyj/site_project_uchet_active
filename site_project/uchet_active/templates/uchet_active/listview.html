@@ -13,7 +13,8 @@
 
         {% if count_dataset > 0 %}            
             <div class="container-fluid">
-                {% include "uchet_active/pagination.html"  %}
+                {% comment %} {% include "uchet_active/pagination.html"  %} {% endcomment %}
+                {% include "uchet_active/pagination_filter.html"  %}
             </div>           
 
             <div class="container-fluid">
@@ -21,10 +22,14 @@
             </div>
 
             <div class="container-fluid">
-                {% include "uchet_active/pagination.html"  %}
+                {% comment %} {% include "uchet_active/pagination.html"  %} {% endcomment %}
+                {% include "uchet_active/pagination_filter.html"  %}
             </div>
         {% else %}
-            <h2>Реестр "{{ title_text }}" пуст</h2>
+            <h2>Реестр "{{ title_text }}" пуст, либо по условиям фильтрации записи не найдены.</h2>
+            <div class="d-grid gap-2 col-3 mx-auto">
+                <a class="btn btn-sm btn-info" href="{% url url_return_to_the_list_view %}" role="button">Вернуться к списку записей</a>
+            </div>
         {% endif %}
 
     </div>

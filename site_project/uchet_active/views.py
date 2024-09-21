@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.http import Http404#, HttpResponse, HttpRequest
 from .models import *
 from .forms import *
+from .filters import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from decouple import config
 
@@ -22,17 +23,51 @@ def index(request):
 # Model Type_active / Типы активов
 
 
+# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# @login_required
+# @permission_required(perm='uchet_active.view_type_active', raise_exception=True)
+# def type_active_list_view(request):
+#     dataset = Type_active.objects.all() # Получаем все записи
+#     count_dataset = dataset.count()
+
+#     page = request.GET.get('page', 1)
+#     paginator = Paginator(dataset, 10)  #  paginate_by 10
+#     try:
+#         dataset = paginator.page(page)
+#     except PageNotAnInteger:
+#         dataset = paginator.page(1)
+#     except EmptyPage:
+#         dataset = paginator.page(paginator.num_pages) 
+
+#     title_text = "Типы активов (список записей)"
+#     context = {
+#             # 'user_login': request.user,            
+#             'dataset': dataset,      
+#             'count_dataset': count_dataset,      
+#             'title_text':title_text,
+#             'user_group_admin': config("USER_GROUP_ADMIN"),  
+#             'user_group_staf': config("USER_GROUP_STAF"),
+#             'url_delete_view': 'uchet_active:type_active_delete',
+#             'url_update_view': 'uchet_active:type_active_update',          
+#         }    
+#     return render(request, 'uchet_active/type_active_listview.html', context)
+
+
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 @login_required
 @permission_required(perm='uchet_active.view_type_active', raise_exception=True)
 def type_active_list_view(request):
     dataset = Type_active.objects.all() # Получаем все записи
-    count_dataset = dataset.count()
+    dataset_filter = Type_active_Filter(request.GET, queryset=dataset)
 
-    page = request.GET.get('page', 1)
+    count_dataset = dataset_filter.qs.count()
+
+    dataset = dataset_filter.qs
     paginator = Paginator(dataset, 10)  #  paginate_by 10
+    page_number = request.GET.get('page')
+    
     try:
-        dataset = paginator.page(page)
+        dataset = paginator.page(page_number)
     except PageNotAnInteger:
         dataset = paginator.page(1)
     except EmptyPage:
@@ -40,14 +75,16 @@ def type_active_list_view(request):
 
     title_text = "Типы активов (список записей)"
     context = {
-            # 'user_login': request.user,            
+            # 'user_login': request.user,
+            'filter': dataset_filter,
             'dataset': dataset,      
             'count_dataset': count_dataset,      
             'title_text':title_text,
             'user_group_admin': config("USER_GROUP_ADMIN"),  
             'user_group_staf': config("USER_GROUP_STAF"),
             'url_delete_view': 'uchet_active:type_active_delete',
-            'url_update_view': 'uchet_active:type_active_update',          
+            'url_update_view': 'uchet_active:type_active_update',
+            'url_return_to_the_list_view': 'uchet_active:type_active_list_view',
         }    
     return render(request, 'uchet_active/type_active_listview.html', context)
 
@@ -164,13 +201,17 @@ def type_active_delete(request, id):
 @login_required
 @permission_required(perm='uchet_active.view_name_active', raise_exception=True)
 def name_active_list_view(request):
-    dataset = Name_active.objects.all() # Получаем все записи
-    count_dataset = dataset.count()
+    dataset = Name_active.objects.all().select_related("type_active",) # Получаем все записи
+    dataset_filter = Name_active_Filter(request.GET, queryset=dataset)
 
-    page = request.GET.get('page', 1)
+    count_dataset = dataset_filter.qs.count()
+
+    dataset = dataset_filter.qs
     paginator = Paginator(dataset, 10)  #  paginate_by 10
+    page_number = request.GET.get('page')
+    
     try:
-        dataset = paginator.page(page)
+        dataset = paginator.page(page_number)
     except PageNotAnInteger:
         dataset = paginator.page(1)
     except EmptyPage:
@@ -178,13 +219,15 @@ def name_active_list_view(request):
 
     title_text = "Модели активов (список записей)"
     context = {
+            'filter': dataset_filter,
             'dataset': dataset,      
             'count_dataset': count_dataset,      
             'title_text':title_text,
             'user_group_admin': config("USER_GROUP_ADMIN"),  
             'user_group_staf': config("USER_GROUP_STAF"),
             'url_delete_view': 'uchet_active:name_active_delete',
-            'url_update_view': 'uchet_active:name_active_update',            
+            'url_update_view': 'uchet_active:name_active_update', 
+            'url_return_to_the_list_view': 'uchet_active:name_active_list_view',           
         }    
     return render(request, 'uchet_active/name_active_listview.html', context)
 
@@ -301,12 +344,16 @@ def name_active_delete(request, id):
 @permission_required(perm='uchet_active.view_inventory_number', raise_exception=True)
 def inventory_number_list_view(request):
     dataset = Inventory_number.objects.all() # Получаем все записи
-    count_dataset = dataset.count()
+    dataset_filter = Inventory_number_Filter(request.GET, queryset=dataset)
 
-    page = request.GET.get('page', 1)
+    count_dataset = dataset_filter.qs.count()
+
+    dataset = dataset_filter.qs
     paginator = Paginator(dataset, 10)  #  paginate_by 10
+    page_number = request.GET.get('page')
+
     try:
-        dataset = paginator.page(page)
+        dataset = paginator.page(page_number)
     except PageNotAnInteger:
         dataset = paginator.page(1)
     except EmptyPage:
@@ -314,13 +361,15 @@ def inventory_number_list_view(request):
 
     title_text = "Инвентарные номера (список записей)"
     context = {
+            'filter': dataset_filter,
             'dataset': dataset,      
             'count_dataset': count_dataset,      
             'title_text':title_text,  
             'user_group_admin': config("USER_GROUP_ADMIN"),  
             'user_group_staf': config("USER_GROUP_STAF"),
             'url_delete_view': 'uchet_active:inventory_number_delete',
-            'url_update_view': 'uchet_active:inventory_number_update',          
+            'url_update_view': 'uchet_active:inventory_number_update',   
+            'url_return_to_the_list_view': 'uchet_active:inventory_number_list_view',       
         }    
     return render(request, 'uchet_active/inventory_number_listview.html', context)
 
@@ -420,7 +469,7 @@ def inventory_number_delete(request, id):
             'user_group_admin': config("USER_GROUP_ADMIN"),  
             'user_group_staf': config("USER_GROUP_STAF"),
         }
- 
+
     if request.method == 'POST':
         data.delete()
         return redirect('uchet_active:inventory_number_list_view')
@@ -437,12 +486,16 @@ def inventory_number_delete(request, id):
 @permission_required(perm='uchet_active.view_owner_active', raise_exception=True)
 def owner_active_list_view(request):
     dataset = Owner_active.objects.all() # Получаем все записи
-    count_dataset = dataset.count()
+    dataset_filter = Owner_active_Filter(request.GET, queryset=dataset)
 
-    page = request.GET.get('page', 1)
+    count_dataset = dataset_filter.qs.count()
+
+    dataset = dataset_filter.qs
     paginator = Paginator(dataset, 10)  #  paginate_by 10
+    page_number = request.GET.get('page')
+    
     try:
-        dataset = paginator.page(page)
+        dataset = paginator.page(page_number)
     except PageNotAnInteger:
         dataset = paginator.page(1)
     except EmptyPage:
@@ -450,6 +503,7 @@ def owner_active_list_view(request):
 
     title_text = "Владелецы активов (список записей)"
     context = {
+            'filter': dataset_filter,
             'dataset': dataset,      
             'count_dataset': count_dataset,      
             'title_text':title_text,
@@ -457,6 +511,7 @@ def owner_active_list_view(request):
             'user_group_staf': config("USER_GROUP_STAF"),
             'url_delete_view': 'uchet_active:owner_active_delete',
             'url_update_view': 'uchet_active:owner_active_update',
+            'url_return_to_the_list_view': 'uchet_active:owner_active_list_view',
         }    
     return render(request, 'uchet_active/owner_active_listview.html', context)
 
@@ -573,26 +628,32 @@ def owner_active_delete(request, id):
 @permission_required(perm='uchet_active.view_location_active', raise_exception=True)
 def location_active_list_view(request):
     dataset = Location_active.objects.all() # Получаем все записи
-    count_dataset = dataset.count()
+    dataset_filter = Location_active_Filter(request.GET, queryset=dataset)
 
-    page = request.GET.get('page', 1)
+    count_dataset = dataset_filter.qs.count()
+
+    dataset = dataset_filter.qs
     paginator = Paginator(dataset, 10)  #  paginate_by 10
+    page_number = request.GET.get('page')
+
     try:
-        dataset = paginator.page(page)
+        dataset = paginator.page(page_number)
     except PageNotAnInteger:
         dataset = paginator.page(1)
     except EmptyPage:
         dataset = paginator.page(paginator.num_pages) 
 
     title_text = "Локация/Склад (список записей)"
-    context = {          
+    context = {        
+            'filter': dataset_filter,  
             'dataset': dataset,      
             'count_dataset': count_dataset,      
             'title_text':title_text,
             'user_group_admin': config("USER_GROUP_ADMIN"),  
             'user_group_staf': config("USER_GROUP_STAF"),
             'url_delete_view': 'uchet_active:location_active_delete',
-            'url_update_view': 'uchet_active:location_active_update',            
+            'url_update_view': 'uchet_active:location_active_update',     
+            'url_return_to_the_list_view': 'uchet_active:location_active_list_view',       
         }    
     return render(request, 'uchet_active/location_active_listview.html', context)
 
@@ -709,12 +770,16 @@ def location_active_delete(request, id):
 @permission_required(perm='uchet_active.view_status_active', raise_exception=True)
 def status_active_list_view(request):
     dataset = Status_active.objects.all() # Получаем все записи
-    count_dataset = dataset.count()
+    dataset_filter = Status_active_Filter(request.GET, queryset=dataset)
 
-    page = request.GET.get('page', 1)
+    count_dataset = dataset_filter.qs.count()
+
+    dataset = dataset_filter.qs
     paginator = Paginator(dataset, 10)  #  paginate_by 10
+    page_number = request.GET.get('page')
+
     try:
-        dataset = paginator.page(page)
+        dataset = paginator.page(page_number)
     except PageNotAnInteger:
         dataset = paginator.page(1)
     except EmptyPage:
@@ -722,7 +787,7 @@ def status_active_list_view(request):
 
     title_text = "Статусы (список записей)"
     context = {
-            # 'user_login': request.user,            
+            'filter': dataset_filter,
             'dataset': dataset,      
             'count_dataset': count_dataset,      
             'title_text':title_text, 
@@ -730,6 +795,7 @@ def status_active_list_view(request):
             'user_group_staf': config("USER_GROUP_STAF"),
             'url_delete_view': 'uchet_active:status_active_delete',
             'url_update_view': 'uchet_active:status_active_update',
+            'url_return_to_the_list_view': 'uchet_active:status_active_list_view',
         }    
     return render(request, 'uchet_active/status_active_listview.html', context)
 
@@ -845,27 +911,33 @@ def status_active_delete(request, id):
 @login_required
 @permission_required(perm='uchet_active.view_name_quantity_active', raise_exception=True)
 def name_quantity_active_list_view(request):
-    dataset = Name_quantity_active.objects.all() # Получаем все записи
-    count_dataset = dataset.count()
+    dataset = Name_quantity_active.objects.all() # Получаем все записи    
+    dataset_filter = Name_quantity_active_Filter(request.GET, queryset=dataset)
 
-    page = request.GET.get('page', 1)
+    count_dataset = dataset_filter.qs.count()
+
+    dataset = dataset_filter.qs
     paginator = Paginator(dataset, 10)  #  paginate_by 10
+    page_number = request.GET.get('page')
+
     try:
-        dataset = paginator.page(page)
+        dataset = paginator.page(page_number)
     except PageNotAnInteger:
         dataset = paginator.page(1)
     except EmptyPage:
         dataset = paginator.page(paginator.num_pages) 
 
     title_text = "Единицы измерения (список записей)"
-    context = {           
+    context = {  
+            'filter': dataset_filter,
             'dataset': dataset,      
             'count_dataset': count_dataset,      
             'title_text':title_text,
             'user_group_admin': config("USER_GROUP_ADMIN"),  
             'user_group_staf': config("USER_GROUP_STAF"),
             'url_delete_view': 'uchet_active:name_quantity_active_delete',
-            'url_update_view': 'uchet_active:name_quantity_active_update',            
+            'url_update_view': 'uchet_active:name_quantity_active_update',       
+            'url_return_to_the_list_view': 'uchet_active:name_quantity_active_list_view',
         }    
     return render(request, 'uchet_active/name_quantity_active_listview.html', context)
 

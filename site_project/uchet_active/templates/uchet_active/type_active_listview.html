@@ -1,5 +1,8 @@
 {% extends "uchet_active/listview.html" %}
 {% load has_group %}
+{% load widget_tweaks %}
+
+{% comment %} {% load render_table from django_tables2 %} {% endcomment %}
 
 
 {% block buttons %}
@@ -9,6 +12,11 @@
             <div class="col-3 align-self-center">
                 <a class="btn btn-sm btn-success" href="{% url 'uchet_active:type_active_create' %}" role="button">Добавить новую запись</a>
             </div>
+            
+
+            
+
+            
             
                 
             {% comment %} 
@@ -27,7 +35,121 @@
             </div>   
             
             {% endcomment %}
+
+            
         </div>
+
+
+
+        {% comment %}
+
+        /* style */
+        .but_for_tab {
+        width: fit-content;
+        /*margin-right: auto;*/
+        display: flex;
+        flex-direction: row;
+        padding: 4px 8px;
+        /*border: 1px solid #1e1e1e;*/
+        border-radius: 5px;
+        cursor: pointer;
+        background: #0dcaf0;
+        color: white;
+        font-size: 14px;
+        } 
+        .hidden_block {
+            display: none;
+        }
+        .visible_block {
+            display: block;
+        }
+
+
+
+
+        <div class="row mx-auto my-1 my-sm-1 my-lg-1 p-1">
+            <div class="container_for_tab">
+                <div class="but_for_tab">Открыть блок</div>
+                
+                <div class="hidden_block tab_content">
+                    Система фильтров, например, 
+                    hidden_block tab_content hidden_block tab_content hidden_block tab_content
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+        function tab(but_tab, hidden_block_tab) {
+          /*проверяем на событие нажатия на кнопку которыю передаём в качестве параметра*/
+          but_tab.addEventListener("click", function() {
+              /*если у блока с контентом есть класс "hidden_block"*/
+              if(hidden_block_tab.classList.contains('hidden_block')) {
+                  /*удаляем класс "hidden_block"*/
+                  hidden_block_tab.classList.remove('hidden_block');
+                  /*ставим класс "visible_block"*/
+                  hidden_block_tab.classList.add('visible_block');
+              }
+              /*если у блока с контентом есть класс "visible_block"*/
+              else if(hidden_block_tab.classList.contains('visible_block')) {
+                  hidden_block_tab.classList.remove('visible_block');
+                  hidden_block_tab.classList.add('hidden_block');
+              }
+          }); 
+        }
+      
+        /*находим элемент кнопку*/
+        var download_more = document.querySelector('.container_for_tab .but_for_tab');
+        /*находим элемент блока со скрытым контентом*/
+        var hidden_list = document.querySelector('.container_for_tab .tab_content');
+          
+        /*запускаем функцию и передаём в неё параметры*/
+        tab(download_more, hidden_list);
+        </script>
+
+
+        {% endcomment %}
+
+        
+
+
+
+        {% comment %}
+        /* style */
+        .div_filters,
+        input[type="checkbox"] {
+        display: none;
+        }
+        input[type="checkbox"]:checked ~ .div_filters {
+            display: block;
+        }
+        /* Стилизация псевдокнопки */
+        .btn_filter {
+            display: inline-block;
+            margin-bottom: 4px;
+            padding: 4px 8px;
+            background-color: #ffffff;
+            border: 1px solid #eeeeee;
+            cursor: pointer;
+        }
+
+
+        <div class="container-fluid">            
+                <label for="pseudoBtn" class="btn btn-sm btn-success">Фильтрация</label>
+                <input type="checkbox" id="pseudoBtn">
+                <div class="div_filters">
+                    <div class="col-3 align-self-center">
+                        <a class="btn btn-sm btn-success" href="{% url 'uchet_active:type_active_create' %}" role="button">Добавить новую запись</a>
+                    </div>
+                    <div class="col-3 align-self-center">
+                        <a class="btn btn-sm btn-success" href="{% url 'uchet_active:type_active_create' %}" role="button">Добавить новую запись</a>
+                    </div>
+                    <div class="col-3 align-self-center">
+                        <a class="btn btn-sm btn-success" href="{% url 'uchet_active:type_active_create' %}" role="button">Добавить новую запись</a>
+                    </div>
+                </div>                       
+        </div>{% endcomment %}
+
 
     {% endif %}    
 {% endblock buttons %}
@@ -37,12 +159,33 @@
                 <thead class="table-primary">
                     {% comment %} <tr class="title_table"><th colspan="2">{{ title_text }}, [всего: {{ count_dataset }}]</th></tr> {% endcomment %}
                     <tr>
-                        <th class="idClass" scope="col">id (ссылка)</th>
+                        <th class="idClass" scope="col" >id (ссылка)</th><!-- rowspan="2" -->
                         <th scope="col">Тип актива</th>
 
                         {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
                             <th scope="col">Операции над записью</th>
                         {% endif %}
+                    </tr>
+                </thead>
+                <thead class="table-secondary">
+                    <tr>
+                        <form method="GET" action="" class="form-inline"><!-- class="popup" -->
+                            {% csrf_token %}
+                            <th>
+                                {% comment %} <div class="row" style="margin: 3px;">
+                                    {% render_field filter.form.id   %}
+                                </div> {% endcomment %}
+                            </th>        
+                            <th>
+                                <div class="row mx-auto" >
+                                    {% render_field filter.form.type_active   class="form-conrol" %}<!--  -->
+                                </div>
+                            </th>                            
+                            <th>
+                                <button type="submit" class="btn btn-sm btn-info" >Фильтровать</button>
+                                <a class="btn btn-sm btn-secondary" href="{% url url_return_to_the_list_view %}" role="button">Очистить</a>                                
+                            </th>                            
+                        </form>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,3 +210,5 @@
                 </tbody>
             </table>
 {% endblock table %}
+
+

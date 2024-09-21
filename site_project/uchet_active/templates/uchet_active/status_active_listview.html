@@ -1,5 +1,6 @@
 {% extends "uchet_active/listview.html" %}
 {% load has_group %}
+{% load widget_tweaks %}
 
 
 {% block buttons %}
@@ -26,6 +27,27 @@
                         {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
                             <th scope="col">Операции над записью</th>
                         {% endif %}
+                    </tr>
+                </thead>
+                <thead class="table-secondary">
+                    <tr>
+                        <form method="GET" action="" class="form-inline"><!-- class="popup" -->
+                            {% csrf_token %}
+                            <th>
+                                {% comment %} <div class="row" style="margin: 3px;">
+                                    {% render_field filter.form.id   %}
+                                </div> {% endcomment %}
+                            </th>        
+                            <th>
+                                <div class="row mx-auto" >
+                                    {% render_field filter.form.status   class="form-conrol" %}<!--  -->
+                                </div>
+                            </th>                            
+                            <th>
+                                <button type="submit" class="btn btn-sm btn-info" >Фильтровать</button>
+                                <a class="btn btn-sm btn-secondary" href="{% url url_return_to_the_list_view %}" role="button">Очистить</a>                                
+                            </th>                            
+                        </form>
                     </tr>
                 </thead>
                 <tbody>

@@ -8,7 +8,7 @@
 
 <div class="container-fluid">
     
-    <form method="post">
+    <form class="form" method="post">
         {% csrf_token %}
 
         <div class="container-fluid">
@@ -25,11 +25,6 @@
                 <a class="btn btn-sm btn-warning" href="{% url url_return_to_the_list_view %}" role="button">Отмена</a>
             </div>
         </div>
-
-        {% comment %} <div class="col-6 ">
-            <input type = "submit" class="submitbutton_delete" name="submit" class="superbutton" name="submit" value="Да">
-        <a class="btn btn-lg btn-info" href="{% url url_return_to_the_list %}">Нет</a>
-        </div>         {% endcomment %}
     </form>    
 </div>
 
