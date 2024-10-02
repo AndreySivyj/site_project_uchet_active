@@ -8,7 +8,7 @@
 
         <div class="row mx-auto my-1 my-sm-1 my-lg-1 p-1">
             <div class="col-3 align-self-center">
-                <a class="btn btn-sm btn-success" href="{% url 'uchet_active:location_active_create' %}" role="button">Добавить новую запись</a>
+                <a class="btn btn-sm btn-success" href="{% url 'uchet_active:profile_ad_create' %}" role="button">Добавить новую запись</a>
             </div>
             
         </div>
@@ -22,8 +22,14 @@
                     {% comment %} <tr class="title_table"><th colspan="2">{{ title_text }}, [всего: {{ count_dataset }}]</th></tr> {% endcomment %}
                     <tr>
                         <th class="idClass" scope="col">id (ссылка)</th>
-                        <th scope="col">Владелец актива (ссылка)</th>
-                        <th scope="col">Локация/Склад</th>
+                        <th scope="col">Учетная запись</th>
+                        <th scope="col">ФИО</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Имя объекта</th>
+                        <th scope="col">Юридическое лицо</th>
+                        <th scope="col">Должность</th>
+                        <th scope="col">Телефон (мобильный)</th>
+                        <th scope="col">Телефон</th>
                         
                         {% comment %} {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %} {% endcomment %}
                             <th scope="col">Операции над записями</th>
@@ -34,21 +40,16 @@
                     <tr>
                         <form method="GET" action="" class="form-inline"><!-- class="popup" -->
                             {% csrf_token %}
-                            <th>
-                                {% comment %} <div class="row" style="margin: 3px;">
-                                    {% render_field filter.form.id   %}
-                                </div> {% endcomment %}
-                            </th>        
-                            <th>
-                                {% comment %} <div class="row mx-auto" > {% endcomment %}
-                                    {% render_field filter.form.owner_active   class="form-conrol" %}<!--  -->
-                                {% comment %} </div> {% endcomment %}
-                            </th>
-                            <th>
-                                <div class="row mx-auto" >
-                                    {% render_field filter.form.location   class="form-conrol" %}<!--  -->
-                                </div>
-                            </th>                              
+                            <th>{% comment %} <div class="row mx-auto" > {% render_field filter.form.id   %} </div> {% endcomment %}</th>       
+                            <th> <div class="row mx-auto" > {% render_field filter.form.account   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.fio   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.email   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.distingished_name   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.company   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.company_position   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.mobile   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.telephone_number   class="form-conrol" %} </div> </th>
+                            
                             <th>
                                 <button type="submit" class="btn btn-sm btn-info" >Фильтровать</button>
                                 <a class="btn btn-sm btn-secondary" href="{% url url_return_to_the_list_view %}" role="button">Очистить</a>                                
@@ -63,17 +64,20 @@
                                 <div class="d-grid gap-2">
                                     <a class="btn btn-sm btn-outline-primary" href="{{ data.get_absolute_url }}" role="button">{{ data.id }}</a>
                                 </div>
-                            </th>
-                            <td>
-                                <div class="d-grid gap-2">
-                                    <a class="btn btn-sm btn-outline-primary" href="{{ data.owner_active.get_absolute_url }}" role="button">{{ data.owner_active }}</a>
-                                </div>
-                            </td>
-                            <td>{{ data.location }}</td>
+                            </th>                            
+
+                            <td>{{ data.account }}</td>
+                            <td>{{ data.fio }}</td>
+                            <td>{{ data.email }}</td>
+                            <td>{{ data.distingished_name }}</td>
+                            <td>{{ data.company }}</td>
+                            <td>{{ data.company_position }}</td>
+                            <td>{{ data.mobile }}</td>
+                            <td>{{ data.telephone_number }}</td>
 
                             {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
                                 <td>
-                                    <a class="btn btn-sm btn-warning" href="{% url url_update_view id=data.id %}">Изменить</a>
+                                    <a class="btn btn-sm btn-warning" href="{% url url_update_view id=data.id %}">Обновить</a>
                                     <a class="btn btn-sm btn-danger" href="{% url url_delete_view id=data.id %}">Удалить</a>
                                 </td>
                             {% else %}
@@ -84,9 +88,3 @@
                 </tbody>
             </table>
 {% endblock table %}
-
-{% block scripts %}
-<script>    
-    $("#id_owner_active").select2({ width:'100%'});    
-</script>
-{% endblock scripts %}

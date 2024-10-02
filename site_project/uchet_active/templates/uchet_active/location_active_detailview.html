@@ -6,7 +6,7 @@
             <thead class="table-primary">
                 <tr>
                     <th class="idClass" scope="col">id</th>                    
-                    <th scope="col">Владелец актива</th>
+                    <th scope="col">Владелец актива (ссылка)</th>
                     <th scope="col">Локация/Склад</th>
 
                     {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}

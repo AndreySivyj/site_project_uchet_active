@@ -8,7 +8,7 @@
 
         <div class="row mx-auto my-1 my-sm-1 my-lg-1 p-1">
             <div class="col-3 align-self-center">
-                <a class="btn btn-sm btn-success" href="{% url 'uchet_active:location_active_create' %}" role="button">Добавить новую запись</a>
+                <a class="btn btn-sm btn-success" href="{% url 'uchet_active:details_document_active_create' %}" role="button">Добавить новую запись</a>
             </div>
             
         </div>
@@ -19,11 +19,14 @@
 {% block table %}
             <table class="table table-striped table-hover table-bordered border-primary text-center">
                 <thead class="table-primary">
-                    {% comment %} <tr class="title_table"><th colspan="2">{{ title_text }}, [всего: {{ count_dataset }}]</th></tr> {% endcomment %}
                     <tr>
                         <th class="idClass" scope="col">id (ссылка)</th>
-                        <th scope="col">Владелец актива (ссылка)</th>
-                        <th scope="col">Локация/Склад</th>
+                        <th scope="col">Документ</th>
+                        <th scope="col">Локация/Склад отгрузки</th>
+                        <th scope="col">comment</th>
+                        <th scope="col">Дата создания</th>
+                        <th scope="col">Кем изменено/создано</th>
+                        <th scope="col">Дата изменения</th>
                         
                         {% comment %} {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %} {% endcomment %}
                             <th scope="col">Операции над записями</th>
@@ -34,21 +37,19 @@
                     <tr>
                         <form method="GET" action="" class="form-inline"><!-- class="popup" -->
                             {% csrf_token %}
-                            <th>
-                                {% comment %} <div class="row" style="margin: 3px;">
-                                    {% render_field filter.form.id   %}
-                                </div> {% endcomment %}
-                            </th>        
-                            <th>
-                                {% comment %} <div class="row mx-auto" > {% endcomment %}
-                                    {% render_field filter.form.owner_active   class="form-conrol" %}<!--  -->
-                                {% comment %} </div> {% endcomment %}
+
+                            <th>{% comment %} <div class="row mx-auto" > {% render_field filter.form.id   %} </div> {% endcomment %}</th>                                 
+                            <th> <div class="row mx-auto" > {% render_field filter.form.name_document   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.shipping_location   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.comment   class="form-conrol" %} </div> </th>
+                            <th> <div class="row mx-auto" > {% render_field filter.form.created   class="form-conrol" %} </div> {% comment %}{% endcomment %}</th>
+                            <th> 
+                                {% comment %}<div class="row mx-auto" > {% endcomment %}
+                                {% render_field filter.form.creator_account   class="form-conrol" %} 
+                                {% comment %}</div> {% endcomment %}
                             </th>
-                            <th>
-                                <div class="row mx-auto" >
-                                    {% render_field filter.form.location   class="form-conrol" %}<!--  -->
-                                </div>
-                            </th>                              
+                            <th> <div class="row mx-auto" > {% render_field filter.form.updated   class="form-conrol" %} </div> </th>
+
                             <th>
                                 <button type="submit" class="btn btn-sm btn-info" >Фильтровать</button>
                                 <a class="btn btn-sm btn-secondary" href="{% url url_return_to_the_list_view %}" role="button">Очистить</a>                                
@@ -64,12 +65,12 @@
                                     <a class="btn btn-sm btn-outline-primary" href="{{ data.get_absolute_url }}" role="button">{{ data.id }}</a>
                                 </div>
                             </th>
-                            <td>
-                                <div class="d-grid gap-2">
-                                    <a class="btn btn-sm btn-outline-primary" href="{{ data.owner_active.get_absolute_url }}" role="button">{{ data.owner_active }}</a>
-                                </div>
-                            </td>
-                            <td>{{ data.location }}</td>
+                            <td>{{ data.name_document  }}</td>
+                            <td>{{ data.shipping_location }}</td>
+                            <td>{{ data.comment }}</td>
+                            <td>{{ data.created }}</td>
+                            <td>{{ data.creator_account }}</td>
+                            <td>{{ data.updated }}</td>
 
                             {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
                                 <td>
@@ -87,6 +88,6 @@
 
 {% block scripts %}
 <script>    
-    $("#id_owner_active").select2({ width:'100%'});    
+    $("#id_creator_account").select2({ width:'100%'});    
 </script>
 {% endblock scripts %}

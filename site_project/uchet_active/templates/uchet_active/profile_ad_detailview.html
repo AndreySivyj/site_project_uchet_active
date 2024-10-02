@@ -1,0 +1,44 @@
+{% extends "uchet_active/detailview.html" %}
+{% load has_group %}
+
+{% block table %}
+    <table class="table table-striped table-hover table-bordered border-primary text-center">
+        <thead class="table-primary">
+            <tr>
+                <th class="idClass" scope="col">id</th>
+                <th scope="col">Учетная запись</th>
+                <th scope="col">ФИО</th>
+                <th scope="col">Email</th>
+                <th scope="col">Имя объекта</th>
+                <th scope="col">Юридическое лицо</th>
+                <th scope="col">Должность</th>
+                <th scope="col">Телефон (мобильный)</th>
+                <th scope="col">Телефон</th>
+
+                {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
+                    <th scope="col">Операции над записью</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>                    
+            <tr>
+                <th class="idClass" scope="row">{{ data.id }}</th>
+                <td>{{ data.account }}</td>
+                <td>{{ data.fio }}</td>
+                <td>{{ data.email }}</td>
+                <td>{{ data.distingished_name }}</td>
+                <td>{{ data.company }}</td>
+                <td>{{ data.company_position }}</td>
+                <td>{{ data.mobile }}</td>
+                <td>{{ data.telephone_number }}</td>
+
+                {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
+                    <td>
+                        <a class="btn btn-sm btn-warning" href="{% url url_update_view id=data.id %}">Обновить</a>
+                        <a class="btn btn-sm btn-danger" href="{% url url_delete_view id=data.id %}">Удалить</a>
+                    </td>
+                {% endif %}
+            </tr>                    
+        </tbody>
+    </table>
+{% endblock table %}

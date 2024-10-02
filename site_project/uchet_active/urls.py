@@ -9,6 +9,10 @@ app_name = 'uchet_active'
 urlpatterns = [
     path('', views.index, name='index'),
     # path('', views.name_active_list_view, name='name_active_list_view'),
+
+    # ###########################################################################################################################################################
+    # Справочники
+    # ###########################################################################################################################################################
     
     # Model Type_active / Тип актива
     path('type_active_list_view/', views.type_active_list_view, name='type_active_list_view'),
@@ -58,6 +62,24 @@ urlpatterns = [
     path('name_quantity_active_create/', views.name_quantity_active_create, name='name_quantity_active_create'),
     path('name_quantity_active_delete/<int:id>/', views.name_quantity_active_delete, name='name_quantity_active_delete'),
     path('name_quantity_active_update/<int:id>/', views.name_quantity_active_update, name='name_quantity_active_update'),
+
+    # ###########################################################################################################################################################
+    # Реестры
+    # ###########################################################################################################################################################
+
+    # Model Details_document_active / Реквизиты документов
+    path('details_document_active_list_view/', views.details_document_active_list_view, name='details_document_active_list_view'),
+    path('details_document_active/<int:id>/', views.details_document_active_detail_view, name='details_document_active_detail_view'),
+    path('details_document_active_create/', views.details_document_active_create, name='details_document_active_create'),
+    path('details_document_active_delete/<int:id>/', views.details_document_active_delete, name='details_document_active_delete'),
+    path('details_document_active_update/<int:id>/', views.details_document_active_update, name='details_document_active_update'),
+
+    # Model Profile_AD / Профили пользователей (AD)
+    path('profile_ad_list_view/', views.profile_ad_list_view, name='profile_ad_list_view'),
+    path('profile_ad/<int:id>/', views.profile_ad_detail_view, name='profile_ad_detail_view'),
+    path('profile_ad_create/', views.profile_ad_create, name='profile_ad_create'),
+    path('profile_ad_delete/<int:id>/', views.profile_ad_delete, name='profile_ad_delete'),
+    path('profile_ad_update/<int:id>/', views.profile_ad_update, name='profile_ad_update'),
 
 
 ]

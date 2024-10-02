@@ -6,9 +6,12 @@
             <thead class="table-primary">
                 <tr>
                     <th class="idClass" scope="col">id</th>
-                    <th scope="col">Тип актива (ссылка)</th>
-                    <th scope="col">Производитель</th>
-                    <th scope="col">Модель</th>
+                    <th scope="col">Документ</th>
+                    <th scope="col">Локация/Склад отгрузки</th>
+                    <th scope="col">comment</th>
+                    <th scope="col">Дата создания</th>
+                    <th scope="col">Кем изменено/создано</th>
+                    <th scope="col">Дата изменения</th>
 
                     {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
                         <th scope="col">Операции над записью</th>
@@ -18,13 +21,12 @@
             <tbody>                    
                 <tr>
                     <th class="idClass" scope="row">{{ data.id }}</th>
-                    <td>
-                        <div class="d-grid gap-2">
-                            <a class="btn btn-sm btn-outline-primary" href="{{ data.type_active.get_absolute_url }}" role="button">{{ data.type_active }}</a>
-                        </div>
-                    </td>
-                    <td>{{ data.manufacturer }}</td>
-                    <td>{{ data.name_model }}</td>
+                    <td>{{ data.name_document  }}</td>
+                    <td>{{ data.shipping_location }}</td>
+                    <td>{{ data.comment }}</td>
+                    <td>{{ data.created }}</td>
+                    <td>{{ data.creator_account }}</td>
+                    <td>{{ data.updated }}</td>
 
                     {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
                         <td>

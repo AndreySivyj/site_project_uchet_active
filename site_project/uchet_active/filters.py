@@ -1,6 +1,11 @@
 import django_filters
 from .models import *
+from django.forms.widgets import DateInput
 
+
+# ###########################################################################################################################################################
+# Справочники
+# ###########################################################################################################################################################
 
 class Type_active_Filter(django_filters.FilterSet):
     # id = django_filters.NumberFilter(field_name="id", lookup_expr='in')
@@ -59,4 +64,38 @@ class Name_quantity_active_Filter(django_filters.FilterSet):
     class Meta:
         model = Name_quantity_active
         fields = ['name_quantity']
+
+
+# ###########################################################################################################################################################
+# Реестры
+# ###########################################################################################################################################################
+
+class Details_document_active_Filter(django_filters.FilterSet):
+    name_document = django_filters.CharFilter(lookup_expr='icontains')
+    shipping_location = django_filters.CharFilter(lookup_expr='icontains')
+    comment = django_filters.CharFilter(lookup_expr='icontains')
+    created = django_filters.DateFilter(widget=DateInput(attrs={'type': 'date'}), lookup_expr='icontains')
+    # creator_account = django_filters.CharFilter(lookup_expr='icontains')
+    updated = django_filters.DateFilter(widget=DateInput(attrs={'type': 'date'}), lookup_expr='icontains')
+    
+    class Meta:
+        model = Details_document_active
+        fields = ['name_document', 'shipping_location', 'comment', 'created', 'creator_account', 'updated',]
+
+
+class Profile_AD_Filter(django_filters.FilterSet):
+    account = django_filters.CharFilter(lookup_expr='icontains')
+    fio = django_filters.CharFilter(lookup_expr='icontains')
+    email = django_filters.CharFilter(lookup_expr='icontains')
+    distingished_name = django_filters.CharFilter(lookup_expr='icontains')
+    company = django_filters.CharFilter(lookup_expr='icontains')
+    company_position = django_filters.CharFilter(lookup_expr='icontains')
+    mobile = django_filters.CharFilter(lookup_expr='icontains')
+    telephone_number = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Profile_AD
+        fields = ['account', 'fio', 'email', 'distingished_name', 'company', 'company_position', 'mobile', 'telephone_number',]
+
+
 

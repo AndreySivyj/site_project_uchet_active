@@ -3,6 +3,10 @@ from .admin_mixins import ExportAsCSVMixin
 from .models import *
 
 
+# ###########################################################################################################################################################
+# Справочники
+# ###########################################################################################################################################################
+
 @admin.register(Type_active)
 class Type_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
     actions = [        
@@ -92,3 +96,37 @@ class Name_quantity_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
     list_filter = ['name_quantity',]
     search_fields = ('name_quantity',)
     ordering = ('name_quantity',)
+
+
+# ###########################################################################################################################################################
+# Реестры
+# ###########################################################################################################################################################
+
+@admin.register(Details_document_active)
+class Details_document_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
+    actions = [        
+        'export_csv',
+    ]
+
+    list_display = ('id', 'name_document', 'shipping_location', 'comment', 'created', 'creator_account', 'updated',)
+    list_display_links = ('name_document',)
+    list_filter = ['name_document', 'shipping_location', 'comment', 'created', 'creator_account', 'updated',]
+    search_fields = ('name_document', 'shipping_location', 'comment', 'created', 'creator_account', 'updated',)
+    ordering = ('created', 'name_document',)
+
+
+@admin.register(Profile_AD)
+class Profile_AD_Admin(admin.ModelAdmin, ExportAsCSVMixin):
+    actions = [        
+        'export_csv',
+    ]
+
+    list_display = ('id', 'account', 'fio', 'email', 'distingished_name', 'company', 'company_position', 'mobile', 'telephone_number',)
+    list_display_links = ('account', 'fio',)
+    list_filter = ['account', 'fio', 'email', 'distingished_name', 'company', 'company_position', 'mobile', 'telephone_number',]
+    search_fields = ('account', 'fio', 'email', 'distingished_name', 'company', 'company_position', 'mobile', 'telephone_number',)
+    ordering = ('account', 'fio',)
+
+
+
+

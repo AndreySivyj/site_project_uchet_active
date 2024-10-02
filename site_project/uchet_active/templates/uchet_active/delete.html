@@ -6,27 +6,31 @@
 
 {% block body %}
 
-<div class="container-fluid">
-    
-    <form class="form" method="post">
-        {% csrf_token %}
+    <div class="container-fluid mx-auto">
+        {% include 'uchet_active/messages.html' %}
+    </div>
 
-        <div class="container-fluid">
-            {% block table %}{% endblock table %}
-        </div>
+    <div class="container-fluid">
+        
+        <form class="form" method="post">
+            {% csrf_token %}
 
-        {% comment %} <div class="container-fluid" style="text-align: center;">
-            <h3>Подтвердите удаление записи</h3>
-        </div> {% endcomment %}
-
-        <div class="container-fluid">
-            <div class="d-grid gap-2 col-3 mx-auto">
-                <input type = "submit" class="btn btn-sm btn-danger" name="submit" value="Удалить">
-                <a class="btn btn-sm btn-warning" href="{% url url_return_to_the_list_view %}" role="button">Отмена</a>
+            <div class="container-fluid">
+                {% block table %}{% endblock table %}
             </div>
-        </div>
-    </form>    
-</div>
+
+            {% comment %} <div class="container-fluid" style="text-align: center;">
+                <h3>Подтвердите удаление записи</h3>
+            </div> {% endcomment %}
+
+            <div class="container-fluid">
+                <div class="d-grid gap-2 col-3 mx-auto">
+                    <input type = "submit" class="btn btn-sm btn-danger" name="submit" value="Удалить">
+                    <a class="btn btn-sm btn-warning" href="{% url url_return_to_the_list_view %}" role="button">Отмена</a>
+                </div>
+            </div>
+        </form>    
+    </div>
 
 {% endblock body %}
 

@@ -3,6 +3,9 @@ from .models import *
 from django_select2 import forms as s2forms
 
 
+# ###########################################################################################################################################################
+# Справочники
+# ###########################################################################################################################################################
 
 class Type_active_Form(ModelForm):
     class Meta:
@@ -55,5 +58,21 @@ class Name_quantity_active_Form(ModelForm):
     class Meta:
         model = Name_quantity_active
         fields = ('name_quantity',)
+
+
+# ###########################################################################################################################################################
+# Реестры
+# ###########################################################################################################################################################
+
+class Details_document_active_Form(ModelForm):
+    class Meta:
+        model = Details_document_active
+        fields = ('name_document', 'shipping_location', 'comment',)
+
+
+class Profile_AD_Form(ModelForm):
+    class Meta:
+        model = Profile_AD
+        fields = ('account',) # 'fio', 'email', 'distingished_name', 'company', 'company_position', 'mobile', 'telephone_number',
 
 

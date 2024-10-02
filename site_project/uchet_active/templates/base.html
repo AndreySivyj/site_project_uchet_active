@@ -80,6 +80,19 @@
                   </ul>
                 </li>
 
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Реестры</a>
+                  <ul class="dropdown-menu">                    
+                    <li><a class="dropdown-item" href="{% url 'uchet_active:details_document_active_list_view' %}">Реквизиты документов</a></li>                    
+                    {% comment %} <li><a class="dropdown-item" href="{% url 'uchet_active:name_active_list_view' %}">Модели активов</a></li> {% endcomment %}
+                    <li><hr class="dropdown-divider"></li>
+                    
+                    <li><a class="dropdown-item" href="{% url 'uchet_active:profile_ad_list_view' %}">Профили пользователей (AD)</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    
+                  </ul>
+                </li>
+
                 {% comment %} 
                 <li class="nav-item">
                   <a class="nav-link active text-light" aria-current="page" href="#">Home</a>

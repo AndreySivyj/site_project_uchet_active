@@ -24,9 +24,9 @@
                         <th class="idClass" scope="col">id (ссылка)</th>
                         <th scope="col">Статус</th>
                         
-                        {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %}
-                            <th scope="col">Операции над записью</th>
-                        {% endif %}
+                        {% comment %} {% if request.user|has_group:user_group_admin or request.user|has_group:user_group_staf %} {% endcomment %}
+                            <th scope="col">Операции над записями</th>
+                        {% comment %} {% endif %} {% endcomment %}
                     </tr>
                 </thead>
                 <thead class="table-secondary">
@@ -65,6 +65,8 @@
                                     <a class="btn btn-sm btn-warning" href="{% url url_update_view id=data.id %}">Изменить</a>
                                     <a class="btn btn-sm btn-danger" href="{% url url_delete_view id=data.id %}">Удалить</a>
                                 </td>
+                            {% else %}
+                                <td></td>
                             {% endif %}
                         </tr>                    
                     {% endfor %}
