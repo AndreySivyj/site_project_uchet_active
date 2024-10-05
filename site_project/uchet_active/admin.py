@@ -67,9 +67,9 @@ class Location_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
 
     list_display = ('id', 'owner_active', 'location',)
     list_display_links = ('location',)
-    list_filter = ['owner_active', 'location',]
-    search_fields = ('owner_active', 'location',)
-    ordering = ('owner_active', 'location',)
+    list_filter = ['owner_active__owner_active', 'location',]
+    search_fields = ('owner_active__owner_active', 'location',)
+    ordering = ('owner_active__owner_active', 'location',)
 
 
 @admin.register(Status_active)
@@ -110,8 +110,8 @@ class Details_document_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
 
     list_display = ('id', 'name_document', 'shipping_location', 'comment', 'created', 'creator_account', 'updated',)
     list_display_links = ('name_document',)
-    list_filter = ['name_document', 'shipping_location', 'comment', 'created', 'creator_account', 'updated',]
-    search_fields = ('name_document', 'shipping_location', 'comment', 'created', 'creator_account', 'updated',)
+    list_filter = ['name_document', 'shipping_location', 'comment', 'created', 'creator_account__username', 'updated',]
+    search_fields = ('name_document', 'shipping_location', 'comment', 'created', 'creator_account__username', 'updated',)
     ordering = ('created', 'name_document',)
 
 
@@ -126,6 +126,22 @@ class Profile_AD_Admin(admin.ModelAdmin, ExportAsCSVMixin):
     list_filter = ['account', 'fio', 'email', 'distingished_name', 'company', 'company_position', 'mobile', 'telephone_number',]
     search_fields = ('account', 'fio', 'email', 'distingished_name', 'company', 'company_position', 'mobile', 'telephone_number',)
     ordering = ('account', 'fio',)
+
+
+@admin.register(Receipt_active)
+class Receipt_active_Admin(admin.ModelAdmin, ExportAsCSVMixin):
+    actions = [        
+        'export_csv',
+    ]
+
+    list_display = ('id', 'details_document_active', 'inventory_number', 'name_active', 'location_active', 
+                    'name_quantity_active', 'quantity', 'serial_number', 'comment', 'created', 'creator_account', 'updated',)
+    list_display_links = ('details_document_active', 'inventory_number', 'name_active',)
+    list_filter = ['details_document_active__name_document', 'inventory_number__inventory_number', 'name_active__name_model', 
+                    'location_active__location', 'serial_number', 'created', 'creator_account__username', 'updated',]
+    search_fields = ('details_document_active__name_document', 'inventory_number__inventory_number', 'name_active__name_model', 'location_active__location', 
+                    'name_quantity_active__name_quantity', 'quantity', 'serial_number', 'comment', 'created', 'creator_account__username', 'updated',)
+    ordering = ('created',)
 
 
 

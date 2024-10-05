@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
+from django.core.validators import MinValueValidator
 
 
 # ###########################################################################################################################################################
@@ -142,7 +143,7 @@ class Details_document_active(models.Model):
 
 
 class Profile_AD(models.Model):
-    account = models.CharField(max_length=50, verbose_name='Учетная запись')
+    account = models.CharField(max_length=50, verbose_name='Учетная запись', db_index=True)
     fio = models.CharField(max_length=75, verbose_name='ФИО')
     email = models.EmailField(verbose_name='Email')
     distingished_name = models.CharField(max_length=175, verbose_name='Имя объекта')
@@ -161,6 +162,31 @@ class Profile_AD(models.Model):
     
     def get_absolute_url(self):
         return reverse('uchet_active:profile_ad_detail_view', args=[self.id,])
+
+
+class Receipt_active(models.Model):
+    details_document_active = models.ForeignKey('Details_document_active', on_delete=models.PROTECT, verbose_name='Реквизиты документа')
+    inventory_number = models.ForeignKey('Inventory_number', on_delete=models.PROTECT, verbose_name='Инвентарный номер')
+    name_active = models.ForeignKey('Name_active', on_delete=models.PROTECT, verbose_name='Модель актива')
+    location_active = models.ForeignKey('Location_active', on_delete=models.PROTECT, verbose_name='Локация/Склад')
+    name_quantity_active = models.ForeignKey('Name_quantity_active', on_delete=models.PROTECT, verbose_name='Ед.изм-я')
+    quantity = models.IntegerField(verbose_name='Количество', default=1, validators=[MinValueValidator(1),])
+    serial_number = models.CharField(max_length=50, blank=True, verbose_name='S/N')
+    comment = models.TextField(verbose_name='Комментарий', blank=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания записи', db_index=True)    
+    creator_account = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name='Кем изменено/создано')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Дата изменения записи')    
+    
+    class Meta:        
+        verbose_name_plural = '(2.3) Поступление активов'
+        verbose_name = 'Поступление актива'
+        ordering = ['created',]
+    
+    def __str__(self):
+        return f"{self.inventory_number} {str(self.name_active)} ({self.quantity} {self.name_quantity_active.name_quantity})"
+    
+    def get_absolute_url(self):
+        return reverse('uchet_active:receipt_active_detail_view', args=[self.id,])
 
 
 

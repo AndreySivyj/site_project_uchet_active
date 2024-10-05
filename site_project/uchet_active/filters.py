@@ -98,4 +98,16 @@ class Profile_AD_Filter(django_filters.FilterSet):
         fields = ['account', 'fio', 'email', 'distingished_name', 'company', 'company_position', 'mobile', 'telephone_number',]
 
 
+class Receipt_active_Filter(django_filters.FilterSet):
+    quantity = django_filters.NumberFilter(lookup_expr='icontains')
+    serial_number = django_filters.CharFilter(lookup_expr='icontains')
+    comment = django_filters.CharFilter(lookup_expr='icontains')
+    created = django_filters.DateFilter(widget=DateInput(attrs={'type': 'date'}), lookup_expr='icontains')
+    updated = django_filters.DateFilter(widget=DateInput(attrs={'type': 'date'}), lookup_expr='icontains')
+
+    class Meta:
+        model = Receipt_active
+        fields = ['details_document_active', 'inventory_number', 'name_active', 'location_active', 
+                    'name_quantity_active', 'quantity', 'serial_number', 'comment', 'created', 'creator_account', 'updated',]
+
 

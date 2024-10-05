@@ -81,6 +81,15 @@ urlpatterns = [
     path('profile_ad_delete/<int:id>/', views.profile_ad_delete, name='profile_ad_delete'),
     path('profile_ad_update/<int:id>/', views.profile_ad_update, name='profile_ad_update'),
 
+    # Model Receipt_active / Поступление активов
+    path('receipt_active_list_view/', views.receipt_active_list_view, name='receipt_active_list_view'),
+    path('receipt_active/<int:id>/', views.receipt_active_detail_view, name='receipt_active_detail_view'),
+    path('receipt_active_create/', views.receipt_active_create, name='receipt_active_create'),
+    path('receipt_active_delete/<int:id>/', views.receipt_active_delete, name='receipt_active_delete'),
+    path('receipt_active_update/<int:id>/', views.receipt_active_update, name='receipt_active_update'),
+
+    
+
 
 ]
 

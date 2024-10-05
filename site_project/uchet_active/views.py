@@ -1520,9 +1520,150 @@ def profile_ad_delete(request, id):
         return render(request, 'uchet_active/profile_ad_delete.html', context)
 
 
+# ***********************************************************************************************************************************************************
+# Model Receipt_active / Поступление активов
 
 
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@login_required
+@permission_required(perm='uchet_active.view_receipt_active', raise_exception=True)
+def receipt_active_list_view(request):
+    dataset = Receipt_active.objects.all().select_related('details_document_active', 'inventory_number', 'name_active', 
+                                                            'location_active', 'name_quantity_active', 'creator_account',) # Получаем все записи
+    dataset_filter =Receipt_active_Filter(request.GET, queryset=dataset)
 
+    count_dataset = dataset_filter.qs.count()
+
+    dataset = dataset_filter.qs
+    paginator = Paginator(dataset, 10)  #  paginate_by 10
+    page_number = request.GET.get('page')
+
+    try:
+        dataset = paginator.page(page_number)
+    except PageNotAnInteger:
+        dataset = paginator.page(1)
+    except EmptyPage:
+        dataset = paginator.page(paginator.num_pages) 
+
+    title_text = "Поступление активов"
+    context = {        
+            'filter': dataset_filter,  
+            'dataset': dataset,      
+            'count_dataset': count_dataset,      
+            'title_text':title_text,
+            'user_group_admin': config("USER_GROUP_ADMIN"),  
+            'user_group_staf': config("USER_GROUP_STAF"),
+            'url_delete_view': 'uchet_active:receipt_active_delete',
+            'url_update_view': 'uchet_active:receipt_active_update',     
+            'url_return_to_the_list_view': 'uchet_active:receipt_active_list_view',       
+        }    
+    return render(request, 'uchet_active/receipt_active_listview.html', context)
+
+
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@login_required
+@permission_required(perm='uchet_active.view_receipt_active', raise_exception=True)
+def receipt_active_detail_view(request, id):
+    try:
+        # Получаем запись по-определенному id
+        data = Receipt_active.objects.get(id=id)
+        title_text = "Поступление актива"
+        context = { 
+            'data': data,      
+            'title_text':title_text,
+            'url_return_to_the_list_view': 'uchet_active:receipt_active_list_view',
+            'user_group_admin': config("USER_GROUP_ADMIN"),  
+            'user_group_staf': config("USER_GROUP_STAF"),
+            'url_delete_view': 'uchet_active:receipt_active_delete',
+            'url_update_view': 'uchet_active:receipt_active_update',
+        }
+    except Receipt_active.DoesNotExist:
+        raise Http404('Такой записи не существует') 
+    return render(request, 'uchet_active/receipt_active_detailview.html', context)
+
+
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@login_required
+@permission_required(perm='uchet_active.add_receipt_active', raise_exception=True)    
+def receipt_active_create(request):
+    title_text = "Поступление актива (добавление записи)"
+    # Проверяем, что запрос на добавление записи (POST) или просто на получение формы
+    if request.method == 'POST':
+        # Получаем из запроса только те данные которые использует форма
+        form = Receipt_active_Form(request.POST)
+        # Проверяем правильность введенных данных
+        if form.is_valid():
+
+            form.instance.creator_account = request.user # записываем в скрытое поле "creator_account" данные по авторизированному пользователю (Кем изменено/создано)
+
+            # сохраняем в базу
+            form.save()
+            # переадресуем на listview
+            return redirect('uchet_active:receipt_active_list_view')
+    else:
+        form = Receipt_active_Form()
+    context = {
+            'form': form,
+            'title_text': title_text,
+            'url_return_to_the_list_view': 'uchet_active:receipt_active_list_view',  
+            'user_group_admin': config("USER_GROUP_ADMIN"),  
+            'user_group_staf': config("USER_GROUP_STAF"),          
+        }        
+    return render(request, 'uchet_active/create.html', context)
+
+
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@login_required
+@permission_required(perm='uchet_active.change_receipt_active', raise_exception=True)
+def receipt_active_update(request, id):
+    try:
+        old_data = get_object_or_404(Receipt_active, id=id)
+        title_text = "Поступление актива (обновление записи)"
+    except Exception:
+        raise Http404('Такой записи не существует')
+    
+    # Если метод POST, то это обновленные данные
+    # Остальные методы - возврат данных для изменения
+    if request.method =='POST':
+        form = Receipt_active_Form(request.POST, instance=old_data)
+        if form.is_valid():
+            form.save()
+            return redirect(f'/receipt_active/{id}')
+    else:
+        form = Receipt_active_Form(instance = old_data)
+    context ={            
+            'form':form,
+            'title_text':title_text,
+            'url_return_to_the_list_view': 'uchet_active:receipt_active_list_view',
+            'user_group_admin': config("USER_GROUP_ADMIN"),  
+            'user_group_staf': config("USER_GROUP_STAF"),
+        }
+    return render(request, 'uchet_active/update.html', context)
+    
+
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@login_required
+@permission_required(perm='uchet_active.delete_receipt_active', raise_exception=True)
+def receipt_active_delete(request, id):
+    try:
+        data = get_object_or_404(Receipt_active, id=id)
+        title_text = "Поступление актива (удаление записи)"
+    except Exception:
+        raise Http404('Такой записи не существует')
+    
+    context ={
+            'data': data,
+            'title_text':title_text,
+            'url_return_to_the_list_view': 'uchet_active:receipt_active_list_view',
+            'user_group_admin': config("USER_GROUP_ADMIN"),  
+            'user_group_staf': config("USER_GROUP_STAF"),
+        }
+
+    if request.method == 'POST':
+        data.delete()
+        return redirect('uchet_active:receipt_active_list_view')
+    else:
+        return render(request, 'uchet_active/receipt_active_delete.html', context)
 
 
 

@@ -76,3 +76,10 @@ class Profile_AD_Form(ModelForm):
         fields = ('account',) # 'fio', 'email', 'distingished_name', 'company', 'company_position', 'mobile', 'telephone_number',
 
 
+class Receipt_active_Form(ModelForm):
+    class Meta:
+        model = Receipt_active
+        fields = ('details_document_active', 'inventory_number', 'name_active', 'location_active', 
+                    'name_quantity_active', 'quantity', 'serial_number', ) 
+
+
